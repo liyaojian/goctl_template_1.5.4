@@ -3,6 +3,7 @@ package {{.PkgName}}
 import (
 	"net/http"
 
+    "github.com/go-playground/validator/v10"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	{{.ImportPackages}}
 )
@@ -11,6 +12,11 @@ func {{.HandlerName}}(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		{{if .HasRequest}}var req types.{{.RequestType}}
 		if err := httpx.Parse(r, &req); err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+
+		if err := validator.New().StructCtx(r.Context(), req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
