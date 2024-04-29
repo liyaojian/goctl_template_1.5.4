@@ -1,3 +1,3 @@
-Name: {{.serviceName}}
-Host: {{.host}}
-Port: {{.port}}
+DataID: {{.serviceName}}.app.conf
+ExtDataIDs:
+  - auth.conf
